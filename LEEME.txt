@@ -1,0 +1,32 @@
+CHAMBA EC 🇪🇨 — VERSIÓN NACIONAL 242 OFERTAS
+
+CONTENIDO
+- 242 ofertas únicas cargadas.
+- 14 provincias representadas en las vacantes encontradas.
+- 27 ciudades/localidades.
+- TODAS las fichas tienen número de contacto visible.
+- TODAS tienen provincia, ciudad/localidad, descripción y requisitos.
+- Si el salario no estaba publicado: “Consultar al número”.
+- No hay botones que envíen a Marketplace, LinkedIn, HiringRoom, Mi Futuro Empleo, etc.
+- La fuente se muestra únicamente como texto.
+- Se mantiene JH777.
+
+IMPORTANTE SOBRE LOS NÚMEROS
+Hay dos tipos:
+1) Contacto publicado específicamente en la oferta (WhatsApp/celular cuando la fuente lo muestra).
+2) Contacto público de la empresa o reclutadora cuando la vacante corporativa no publica un teléfono específico.
+La web etiqueta claramente cuál es cuál; NO se inventaron números.
+
+FUENTES CONSULTADAS
+HiringRoom de empresas/reclutadoras (GENTE+, Corporación Superior, Multitrabajos Staffing,
+Manpower/TOP LABORAL, Quifatex, BGR, Multicines, AYASA, CENTRIC, Veolia, EFICACIA,
+Grupo Danec, CACPE Pastaza, INTEROC), sitios oficiales para validar teléfonos públicos,
+Mi Futuro Empleo y Clasificados El Universo.
+
+ACTUALIZACIÓN EN GITHUB
+Sube a la raíz del repositorio:
+- index.html
+- LEEME.txt
+- vercel.json
+
+Luego conecta ese repositorio al proyecto existente chamba-ec en Vercel.
