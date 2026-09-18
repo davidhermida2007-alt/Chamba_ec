@@ -30,3 +30,4 @@ Sube a la raíz del repositorio:
 - vercel.json
 
 Luego conecta ese repositorio al proyecto existente chamba-ec en Vercel.
+Actualización Chamba EC - 242 ofertas
