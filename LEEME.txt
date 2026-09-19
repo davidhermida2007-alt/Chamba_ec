@@ -1,21 +1,59 @@
-CHAMBA EC 🇪🇨 — ACTUALIZACIÓN PENÍNSULA + MARKETPLACE
+CHAMBA EC 🇪🇨 — V3 PUBLICACIONES + PLANES + PANEL JH777
 
-TOTAL: 268 ofertas cargadas.
-OFERTAS EN PROVINCIA DE SANTA ELENA: 28
-ANUNCIOS DE MARKETPLACE CON NÚMERO: 2
-PROVINCIAS: 14
-CIUDADES/LOCALIDADES: 31
+BASE ACTUAL
+- 268 ofertas curadas incluidas de forma estática.
+- 14 provincias.
+- 29 ciudades/localidades con ubicación específica.
+- 28 ofertas de la provincia de Santa Elena.
+- Se corrigió “Guayas” usado como ciudad (ahora queda “No especificada”).
+- Se unificó “Santo Domingo de los Colorados” como “Santo Domingo”.
 
-CAMBIOS:
-- Se agregaron nuevas ofertas de La Libertad, Santa Elena, Salinas, Chanduy y Montañita.
-- Se agregaron anuncios de Marketplace que sí tenían número público.
-- Se añadió el filtro “📍 Península”.
-- Todas las nuevas fichas tienen número, lugar, descripción y requisitos.
-- No se añadieron anuncios de Marketplace sin número.
-- La fuente aparece como texto, sin mandar al usuario fuera de Chamba EC.
-- En anuncios cuya vigencia no se pudo confirmar automáticamente se indica que se confirme por teléfono o WhatsApp.
-- Se mantiene JH777.
+NUEVO EN V3
+- Botón visible “🏢 Publicar vacante”.
+- Planes:
+  * Prueba gratis: $0 / 3 días
+  * Básico: $1 / 7 días
+  * La prueba gratis pasa a este plan al terminar los 3 días, una vez confirmado el pago de $1.
+  * Estándar: $2 / 15 días
+  * Destacado: $4 / 15 días
+  * Urgente: $5 / 7 días
+  * Empresa: $10 / 30 días / hasta 5 vacantes
+- Formulario para empleadores.
+- Todas las solicitudes quedan PENDIENTES.
+- Las ofertas aprobadas aparecen para todos y vencen automáticamente.
+- Panel privado JH777 en /admin.
+- Desde el panel puedes:
+  * ver pendientes/publicadas/rechazadas/expiradas
+  * confirmar pago
+  * aprobar/rechazar/eliminar
+  * cambiar precios y días de los planes
+  * agregar una oferta manual sin editar GitHub
+- El trabajador nunca paga por buscar o contactar.
 
-PARA ACTUALIZAR LA WEB:
-En GitHub reemplaza index.html y LEEME.txt con estos nuevos archivos y confirma el commit.
-Vercel detectará el cambio y actualizará chamba-ec.vercel.app automáticamente.
+IMPORTANTE
+Esta V3 necesita Supabase para que las publicaciones sean compartidas entre todos.
+NO subas service_role key al sitio. Solo se usa la clave ANON/PUBLISHABLE con RLS.
+
+ARCHIVOS
+- index.html
+- admin.html
+- supabase-config.js
+- supabase-schema.sql
+- vercel.json
+
+ORDEN DE INSTALACIÓN
+1. Crear proyecto en Supabase.
+2. Ejecutar supabase-schema.sql en SQL Editor.
+3. Crear tu usuario administrador en Supabase Authentication.
+4. Agregar su UUID a public.admins usando la instrucción al final del SQL.
+5. Copiar Project URL + anon/publishable key en supabase-config.js.
+6. Subir/reemplazar estos archivos en el mismo GitHub de Chamba EC.
+7. Vercel desplegará automáticamente.
+
+
+CAMBIO SOLICITADO
+- Prueba gratis: 3 días.
+- Después puede renovarse al plan Básico: $1 por 7 días.
+- El panel JH777 incluye el botón “Renovar a Básico $1 / 7 días”.
+- La renovación NO cobra automáticamente todavía: se activa cuando tú confirmas el pago de $1.
+- Los demás planes permanecen igual.
