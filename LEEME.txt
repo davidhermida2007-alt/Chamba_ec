@@ -1,59 +1,44 @@
-CHAMBA EC 🇪🇨 — V3 PUBLICACIONES + PLANES + PANEL JH777
+CHAMBA EC 🇪🇨 — V3.1 PAQUETES DE PUBLICACIONES
 
-BASE ACTUAL
-- 268 ofertas curadas incluidas de forma estática.
-- 14 provincias.
-- 29 ciudades/localidades con ubicación específica.
-- 28 ofertas de la provincia de Santa Elena.
-- Se corrigió “Guayas” usado como ciudad (ahora queda “No especificada”).
-- Se unificó “Santo Domingo de los Colorados” como “Santo Domingo”.
-
-NUEVO EN V3
-- Botón visible “🏢 Publicar vacante”.
-- Planes:
-  * Prueba gratis: $0 / 3 días
-  * Básico: $1 / 7 días
-  * La prueba gratis pasa a este plan al terminar los 3 días, una vez confirmado el pago de $1.
-  * Estándar: $2 / 15 días
-  * Destacado: $4 / 15 días
-  * Urgente: $5 / 7 días
-  * Empresa: $10 / 30 días / hasta 5 vacantes
-- Formulario para empleadores.
-- Todas las solicitudes quedan PENDIENTES.
-- Las ofertas aprobadas aparecen para todos y vencen automáticamente.
-- Panel privado JH777 en /admin.
-- Desde el panel puedes:
-  * ver pendientes/publicadas/rechazadas/expiradas
-  * confirmar pago
-  * aprobar/rechazar/eliminar
-  * cambiar precios y días de los planes
-  * agregar una oferta manual sin editar GitHub
-- El trabajador nunca paga por buscar o contactar.
+PLANES ACTUALIZADOS
+- Prueba gratis: $0 / 3 días / 1 publicación
+- Básico: $1 / 7 días / hasta 2 publicaciones
+- Estándar: $2 / 15 días / hasta 3 publicaciones
+- Destacado: $4 / 15 días / hasta 4 publicaciones destacadas
+- Urgente: $5 / 7 días / hasta 5 publicaciones urgentes
+- Empresa: $10 / 30 días / hasta 10 publicaciones
 
 IMPORTANTE
-Esta V3 necesita Supabase para que las publicaciones sean compartidas entre todos.
-NO subas service_role key al sitio. Solo se usa la clave ANON/PUBLISHABLE con RLS.
+Ahora el número de publicaciones es REAL, no solo texto en la tarjeta.
+Cada compra crea un PAQUETE con un código privado. El comprador usa ese código para
+publicar más ofertas hasta consumir el límite de su plan.
+
+Ejemplo:
+- Compra Estándar.
+- Recibe un código.
+- Envía su primera oferta.
+- Puede volver a Chamba EC, tocar “Ya tengo un paquete” y usar el mismo código
+  para enviar hasta completar sus 3 publicaciones.
+
+PAGOS
+El cobro todavía es manual: JH777 confirma el pago desde /admin.
+No hay cobro automático con tarjeta todavía.
+
+PRUEBA GRATIS
+La prueba incluye 1 publicación por 3 días.
+Al renovarla a Básico por $1, el paquete pasa a permitir hasta 2 publicaciones
+durante 7 días. La publicación original cuenta como una, por lo que queda una adicional.
+
+PARA ACTUALIZAR EL SUPABASE QUE YA ESTÁ CREADO
+1. Abre Supabase > SQL Editor.
+2. Ejecuta una sola vez: MIGRAR-A-V3-1.sql
+3. Luego sube los archivos web a GitHub y Vercel se actualizará.
 
 ARCHIVOS
 - index.html
 - admin.html
 - supabase-config.js
-- supabase-schema.sql
+- supabase-schema.sql (instalación completa futura)
+- MIGRAR-A-V3-1.sql (actualización para tu base actual)
+- LEEME.txt
 - vercel.json
-
-ORDEN DE INSTALACIÓN
-1. Crear proyecto en Supabase.
-2. Ejecutar supabase-schema.sql en SQL Editor.
-3. Crear tu usuario administrador en Supabase Authentication.
-4. Agregar su UUID a public.admins usando la instrucción al final del SQL.
-5. Copiar Project URL + anon/publishable key en supabase-config.js.
-6. Subir/reemplazar estos archivos en el mismo GitHub de Chamba EC.
-7. Vercel desplegará automáticamente.
-
-
-CAMBIO SOLICITADO
-- Prueba gratis: 3 días.
-- Después puede renovarse al plan Básico: $1 por 7 días.
-- El panel JH777 incluye el botón “Renovar a Básico $1 / 7 días”.
-- La renovación NO cobra automáticamente todavía: se activa cuando tú confirmas el pago de $1.
-- Los demás planes permanecen igual.

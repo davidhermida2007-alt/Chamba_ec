@@ -4,7 +4,7 @@
 <title>JH777 · Administración Chamba EC</title>
 <style>
 *{box-sizing:border-box}body{margin:0;font-family:system-ui,-apple-system,Segoe UI,sans-serif;background:#f4f6fa;color:#132033}button,input,select,textarea{font:inherit}
-header{background:#102033;color:#fff;padding:16px 20px}.wrap{max-width:1180px;margin:auto;padding:22px}.card{background:#fff;border:1px solid #e3e7ed;border-radius:16px;padding:18px;margin-bottom:14px}.login{max-width:460px;margin:60px auto}.field{display:grid;gap:6px;margin:10px 0}.field input,.field select,.field textarea{padding:11px;border:1px solid #ccd3dd;border-radius:10px}.btn{border:0;border-radius:10px;padding:10px 13px;font-weight:850;cursor:pointer;background:#ffd23f}.dark{background:#102033;color:#fff}.green{background:#19a15f;color:#fff}.red{background:#d84758;color:#fff}.muted{color:#667085}.tabs{display:flex;gap:7px;flex-wrap:wrap;margin:14px 0}.tab{border:1px solid #d6dce5;background:#fff;padding:9px 12px;border-radius:999px;cursor:pointer}.tab.on{background:#102033;color:#fff}.jobs{display:grid;gap:12px}.job{background:#fff;border:1px solid #e3e7ed;border-radius:15px;padding:16px}.toprow{display:flex;justify-content:space-between;gap:10px;align-items:start}.badge{font-size:12px;font-weight:850;padding:5px 8px;border-radius:999px;background:#eaf2ff}.actions{display:flex;gap:7px;flex-wrap:wrap;margin-top:12px}.grid2{display:grid;grid-template-columns:1fr 1fr;gap:10px}.planrow{display:grid;grid-template-columns:1.2fr .6fr .6fr .6fr auto;gap:8px;align-items:end;margin:8px 0}.notice{background:#fff8e1;border:1px solid #ead98a;border-radius:12px;padding:12px}.error{background:#fff0f1;border:1px solid #efc3c9;border-radius:12px;padding:12px;color:#8a2230}
+header{background:#102033;color:#fff;padding:16px 20px}.wrap{max-width:1180px;margin:auto;padding:22px}.card{background:#fff;border:1px solid #e3e7ed;border-radius:16px;padding:18px;margin-bottom:14px}.login{max-width:460px;margin:60px auto}.field{display:grid;gap:6px;margin:10px 0}.field input,.field select,.field textarea{padding:11px;border:1px solid #ccd3dd;border-radius:10px}.btn{border:0;border-radius:10px;padding:10px 13px;font-weight:850;cursor:pointer;background:#ffd23f}.dark{background:#102033;color:#fff}.green{background:#19a15f;color:#fff}.red{background:#d84758;color:#fff}.muted{color:#667085}.tabs{display:flex;gap:7px;flex-wrap:wrap;margin:14px 0}.tab{border:1px solid #d6dce5;background:#fff;padding:9px 12px;border-radius:999px;cursor:pointer}.tab.on{background:#102033;color:#fff}.jobs{display:grid;gap:12px}.job{background:#fff;border:1px solid #e3e7ed;border-radius:15px;padding:16px}.toprow{display:flex;justify-content:space-between;gap:10px;align-items:start}.badge{font-size:12px;font-weight:850;padding:5px 8px;border-radius:999px;background:#eaf2ff}.actions{display:flex;gap:7px;flex-wrap:wrap;margin-top:12px}.grid2{display:grid;grid-template-columns:1fr 1fr;gap:10px}.planrow{display:grid;grid-template-columns:1.2fr .55fr .55fr .55fr .55fr auto;gap:8px;align-items:end;margin:8px 0}.notice{background:#fff8e1;border:1px solid #ead98a;border-radius:12px;padding:12px}.error{background:#fff0f1;border:1px solid #efc3c9;border-radius:12px;padding:12px;color:#8a2230}
 @media(max-width:720px){.grid2,.planrow{grid-template-columns:1fr}.toprow{flex-direction:column}}
 </style></head><body>
 <header><div class="wrap" style="padding:0"><b>JH777 · Panel de Chamba EC</b></div></header>
@@ -21,7 +21,7 @@ if(!ready){
   app.innerHTML='<div class="card login"><h2>Falta conectar Supabase</h2><p class="muted">Primero completa <b>supabase-config.js</b>. No publiques esta versión como sistema de cobro hasta terminar la configuración.</p></div>';
 }else{
   const sb=createClient(cfg.supabaseUrl,cfg.supabaseAnonKey);
-  let status='pending', jobs=[], plans=[], user=null;
+  let status='pending', jobs=[], plans=[], orders=[], user=null;
   const session=(await sb.auth.getSession()).data.session;
   if(session){user=session.user;await verifyAdmin()} else showLogin();
 
@@ -35,7 +35,7 @@ if(!ready){
     await dashboard();
   }
   async function dashboard(){
-    await Promise.all([loadJobs(),loadPlans()]);
+    await Promise.all([loadJobs(),loadPlans(),loadOrders()]);
     renderDashboard();
   }
   async function loadJobs(){
@@ -46,17 +46,22 @@ if(!ready){
     const {data,error}=await sb.from('plans').select('*').order('sort_order');
     plans=error?[]:(data||[]);
   }
+  async function loadOrders(){
+    const {data,error}=await sb.from('posting_orders').select('*').order('created_at',{ascending:false});
+    orders=error?[]:(data||[]);
+  }
   function renderDashboard(){
     const counts=Object.fromEntries(['pending','approved','rejected','expired'].map(s=>[s,jobs.filter(j=>j.status===s).length]));
     app.innerHTML=`<div class="toprow"><div><h1 style="margin-bottom:2px">Administración</h1><div class="muted">${esc(user.email)}</div></div><button id="logout" class="btn">Cerrar sesión</button></div>
       <div class="tabs">
         ${['pending','approved','rejected','expired'].map(s=>`<button class="tab ${status===s?'on':''}" data-s="${s}">${label(s)} (${counts[s]})</button>`).join('')}
-        <button class="tab" id="plansTab">💵 Planes y precios</button>
+        <button class="tab" id="ordersTab">📦 Paquetes</button><button class="tab" id="plansTab">💵 Planes y precios</button>
         <button class="tab" id="manualTab">➕ Agregar oferta</button>
       </div>
       <div id="content"></div>`;
     document.getElementById('logout').onclick=async()=>{await sb.auth.signOut();location.reload()};
     document.querySelectorAll('[data-s]').forEach(b=>b.onclick=()=>{status=b.dataset.s;renderJobs()});
+    document.getElementById('ordersTab').onclick=renderOrders;
     document.getElementById('plansTab').onclick=renderPlans;
     document.getElementById('manualTab').onclick=renderManual;
     renderJobs();
@@ -71,14 +76,13 @@ if(!ready){
       ${j.expires_at?`<p class="muted">Vence: ${new Date(j.expires_at).toLocaleString('es-EC')}</p>`:''}
       <div class="actions">
         ${j.payment_status==='pending'&&Number(j.price_snapshot)>0?`<button class="btn" data-pay="${j.id}">Marcar pago verificado</button>`:''}
-        ${j.status==='pending'?`<button class="btn green" data-approve="${j.id}">Aprobar</button><button class="btn red" data-reject="${j.id}">Rechazar</button>`:''}${j.plan_id==='first_free'&&j.status==='expired'?`<button class="btn green" data-renew="${j.id}">Renovar a Básico $1 / 7 días</button>`:''}
+        ${j.status==='pending'?`<button class="btn green" data-approve="${j.id}">Aprobar</button><button class="btn red" data-reject="${j.id}">Rechazar</button>`:''}
         <button class="btn red" data-delete="${j.id}">Eliminar</button>
       </div>
     </article>`).join(''):'<div class="card">No hay elementos en esta sección.</div>'}</div>`;
     document.querySelectorAll('[data-pay]').forEach(b=>b.onclick=()=>updateJob(b.dataset.pay,{payment_status:'verified'}));
     document.querySelectorAll('[data-approve]').forEach(b=>b.onclick=()=>updateJob(b.dataset.approve,{status:'approved'}));
     document.querySelectorAll('[data-reject]').forEach(b=>b.onclick=()=>updateJob(b.dataset.reject,{status:'rejected'}));
-    document.querySelectorAll('[data-renew]').forEach(b=>b.onclick=()=>renewFree(b.dataset.renew));
     document.querySelectorAll('[data-delete]').forEach(b=>b.onclick=()=>deleteJob(b.dataset.delete));
   }
   async function updateJob(id,patch){
@@ -101,19 +105,57 @@ if(!ready){
     if(error){alert(error.message);return}
     await loadJobs();renderJobs();
   }
+  function renderOrders(){
+    document.getElementById('content').innerHTML=`<div class="jobs">${orders.length?orders.map(o=>`<article class="job">
+      <div class="toprow"><div><span class="badge">${esc(o.plan_id)}</span><h3>${esc(o.company)}</h3><div class="muted">${esc(o.publisher_name)} · ${esc(o.contact)}</div></div><b>$${Number(o.price_snapshot).toFixed(2)}</b></div>
+      <p><b>Publicaciones:</b> ${o.used_publications} / ${o.max_publications} · <b>Estado:</b> ${esc(o.status)} · <b>Pago:</b> ${esc(o.payment_status)}</p>
+      <p><b>Código del paquete:</b> <code>${esc(o.access_code)}</code></p>
+      ${o.expires_at?`<p class="muted">Vence: ${new Date(o.expires_at).toLocaleString('es-EC')}</p>`:''}
+      <div class="actions">
+        ${o.payment_status==='pending'&&Number(o.price_snapshot)>0?`<button class="btn" data-orderpay="${o.id}">Marcar pago verificado</button>`:''}
+        ${o.plan_id==='first_free'&&o.status==='expired'?`<button class="btn green" data-orderrenew="${o.id}">Renovar a Básico $1 / 7 días</button>`:''}
+        <button class="btn red" data-orderdelete="${o.id}">Eliminar paquete</button>
+      </div>
+    </article>`).join(''):'<div class="card">Todavía no hay paquetes creados.</div>'}</div>`;
+    document.querySelectorAll('[data-orderpay]').forEach(b=>b.onclick=()=>updateOrder(b.dataset.orderpay,{payment_status:'verified'}));
+    document.querySelectorAll('[data-orderrenew]').forEach(b=>b.onclick=()=>renewOrder(b.dataset.orderrenew));
+    document.querySelectorAll('[data-orderdelete]').forEach(b=>b.onclick=()=>deleteOrder(b.dataset.orderdelete));
+  }
+  async function updateOrder(id,patch){
+    const {error}=await sb.from('posting_orders').update(patch).eq('id',id);
+    if(error){alert(error.message);return}
+    await loadOrders();renderOrders();
+  }
+  async function renewOrder(id){
+    if(!confirm('¿Confirmas que recibiste $1 y quieres renovar esta prueba al plan Básico por 7 días?'))return;
+    let {error}=await sb.from('posting_orders').update({payment_status:'verified'}).eq('id',id);
+    if(error){alert(error.message);return}
+    error=(await sb.rpc('renew_free_order_to_basic',{p_order_id:id})).error;
+    if(error){alert(error.message);return}
+    alert('Paquete renovado: Básico, 2 publicaciones / 7 días ✅');
+    await Promise.all([loadOrders(),loadJobs()]);renderOrders();
+  }
+  async function deleteOrder(id){
+    if(!confirm('¿Eliminar este paquete? Las publicaciones relacionadas conservarán su historial, pero perderán el paquete.'))return;
+    const {error}=await sb.from('posting_orders').delete().eq('id',id);
+    if(error){alert(error.message);return}
+    await loadOrders();renderOrders();
+  }
+
   function renderPlans(){
     document.getElementById('content').innerHTML=`<div class="card"><h2>Planes y precios</h2><p class="muted">Puedes cambiar precio y duración sin editar GitHub.</p>
       ${plans.filter(p=>p.public_plan).map(p=>`<div class="planrow">
         <div><b>${esc(p.name)}</b><div class="muted">${esc(p.description||'')}</div></div>
         <div class="field"><label>Precio $</label><input id="price_${p.id}" type="number" step="0.01" min="0" value="${p.price}"></div>
         <div class="field"><label>Días</label><input id="days_${p.id}" type="number" min="1" value="${p.duration_days}"></div>
+        <div class="field"><label>Publicaciones</label><input id="posts_${p.id}" type="number" min="1" value="${p.max_vacancies}"></div>
         <div class="field"><label>Activo</label><select id="enabled_${p.id}"><option value="true" ${p.enabled?'selected':''}>Sí</option><option value="false" ${!p.enabled?'selected':''}>No</option></select></div>
         <button class="btn" data-saveplan="${p.id}">Guardar</button>
       </div>`).join('')}</div>`;
     document.querySelectorAll('[data-saveplan]').forEach(b=>b.onclick=()=>savePlan(b.dataset.saveplan));
   }
   async function savePlan(id){
-    const patch={price:Number(document.getElementById('price_'+id).value),duration_days:Number(document.getElementById('days_'+id).value),enabled:document.getElementById('enabled_'+id).value==='true'};
+    const patch={price:Number(document.getElementById('price_'+id).value),duration_days:Number(document.getElementById('days_'+id).value),max_vacancies:Number(document.getElementById('posts_'+id).value),enabled:document.getElementById('enabled_'+id).value==='true'};
     const {error}=await sb.from('plans').update(patch).eq('id',id);
     if(error){alert(error.message);return}
     alert('Plan actualizado ✅');await loadPlans();
