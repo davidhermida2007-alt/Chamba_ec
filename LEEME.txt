@@ -1,33 +1,21 @@
-CHAMBA EC 🇪🇨 — VERSIÓN NACIONAL 242 OFERTAS
+CHAMBA EC 🇪🇨 — ACTUALIZACIÓN PENÍNSULA + MARKETPLACE
 
-CONTENIDO
-- 242 ofertas únicas cargadas.
-- 14 provincias representadas en las vacantes encontradas.
-- 27 ciudades/localidades.
-- TODAS las fichas tienen número de contacto visible.
-- TODAS tienen provincia, ciudad/localidad, descripción y requisitos.
-- Si el salario no estaba publicado: “Consultar al número”.
-- No hay botones que envíen a Marketplace, LinkedIn, HiringRoom, Mi Futuro Empleo, etc.
-- La fuente se muestra únicamente como texto.
+TOTAL: 268 ofertas cargadas.
+OFERTAS EN PROVINCIA DE SANTA ELENA: 28
+ANUNCIOS DE MARKETPLACE CON NÚMERO: 2
+PROVINCIAS: 14
+CIUDADES/LOCALIDADES: 31
+
+CAMBIOS:
+- Se agregaron nuevas ofertas de La Libertad, Santa Elena, Salinas, Chanduy y Montañita.
+- Se agregaron anuncios de Marketplace que sí tenían número público.
+- Se añadió el filtro “📍 Península”.
+- Todas las nuevas fichas tienen número, lugar, descripción y requisitos.
+- No se añadieron anuncios de Marketplace sin número.
+- La fuente aparece como texto, sin mandar al usuario fuera de Chamba EC.
+- En anuncios cuya vigencia no se pudo confirmar automáticamente se indica que se confirme por teléfono o WhatsApp.
 - Se mantiene JH777.
 
-IMPORTANTE SOBRE LOS NÚMEROS
-Hay dos tipos:
-1) Contacto publicado específicamente en la oferta (WhatsApp/celular cuando la fuente lo muestra).
-2) Contacto público de la empresa o reclutadora cuando la vacante corporativa no publica un teléfono específico.
-La web etiqueta claramente cuál es cuál; NO se inventaron números.
-
-FUENTES CONSULTADAS
-HiringRoom de empresas/reclutadoras (GENTE+, Corporación Superior, Multitrabajos Staffing,
-Manpower/TOP LABORAL, Quifatex, BGR, Multicines, AYASA, CENTRIC, Veolia, EFICACIA,
-Grupo Danec, CACPE Pastaza, INTEROC), sitios oficiales para validar teléfonos públicos,
-Mi Futuro Empleo y Clasificados El Universo.
-
-ACTUALIZACIÓN EN GITHUB
-Sube a la raíz del repositorio:
-- index.html
-- LEEME.txt
-- vercel.json
-
-Luego conecta ese repositorio al proyecto existente chamba-ec en Vercel.
-Actualización Chamba EC - 242 ofertas
+PARA ACTUALIZAR LA WEB:
+En GitHub reemplaza index.html y LEEME.txt con estos nuevos archivos y confirma el commit.
+Vercel detectará el cambio y actualizará chamba-ec.vercel.app automáticamente.
